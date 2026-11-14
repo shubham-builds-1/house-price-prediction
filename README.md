@@ -2,11 +2,12 @@
 **Live demo:** [house-price-predict-one.streamlit.app](https://house-price-predict-one.streamlit.app)
 
 > **Note:** This is a demo model trained on *simulated* data built around published 2026 asking-price benchmarks for 9 Indian cities (121 localities). Estimates are illustrative, not a market valuation. Asking prices are usually higher than final sale prices.
+
 An end-to-end machine-learning project that predicts house prices (in INR lakhs) from property features. It started as a 3-feature linear regression and was extended into a full pipeline: more features, preprocessing, model comparison, cross-validation, hyperparameter tuning, explainability, a prediction CLI, unit tests and a small web app.
 
 ![Model comparison](reports/figures/model_comparison.png)
 
-## Results
+## Results of the original pipeline (synthetic 5-city dataset)
 
 Evaluated on a held-out test set of 400 houses (80:20 split). The best model was chosen using 5-fold cross-validation on the training set only, so the test set stays unbiased.
 
@@ -26,6 +27,14 @@ The tuned Gradient Boosting model reduces test RMSE by about **75%** compared wi
 | ![Actual vs predicted](reports/figures/actual_vs_predicted.png) | ![Feature importance](reports/figures/feature_importance.png) |
 
 City and area drive most of the price, followed by location score, age and distance from the centre. Bedroom count adds almost nothing once area is known, since the two are strongly correlated.
+
+## Live demo model (house_price/market.py)
+
+The deployed Streamlit app uses a separate, market-calibrated model covering 9 Indian cities and 121 localities
+(Delhi, Mumbai, Bengaluru, Hyderabad, Pune, Chennai, Kolkata, Gurugram, Noida). Training data is **simulated** around
+published 2026 locality-level asking prices (editable in `RATES`), with adjustments for size, age, furnishing and parking.
+The scores above come from the original pipeline, not from this model. Listing sites disagree with each other by 20-60%,
+so the benchmarks are approximate.
 
 ## What the project does
 
@@ -52,6 +61,7 @@ house-price-prediction/
 │   ├── plots.py       # figures
 │   ├── train.py       # training, CV, tuning, evaluation
 │   └── predict.py     # predict a single house from the command line
+│   └── market.py      # live-demo model: 9 cities, 121 localities
 ├── tests/             # pytest unit tests
 ├── app.py             # Streamlit web app
 ├── data/house_data.csv
